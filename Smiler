@@ -1,0 +1,83 @@
+game.ReplicatedStorage.GameData.LatestRoom.Changed:Wait()
+while true do
+wait(50)
+coroutine.wrap(function()
+        while true do
+        end
+        end)        
+        local random = math.random(1,100)
+        print("实体：Smiler 随机数：",random)
+        if random >= 70 and random <= 100 then
+        
+        local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Entity%20Spawner/V2/Source.lua"))()
+        
+        ---====== Create entity ======---
+        
+        local entity = spawner.Create({
+            Entity = {
+                Name = "Smiler",
+                Asset = "https://raw.githubusercontent.com/munciseek/DOORS-entity-models/main/Nightmare/Smiler.rbxm",
+                HeightOffset = 0.5
+            },
+            Lights = {
+                Flicker = {
+                    Enabled = true,
+                    Duration = 5
+                },
+                Shatter = true,
+                Repair = false
+            },
+            CameraShake = {
+                Enabled = true,
+                Range = 100,
+                Values = {20, 20, 1, 2} -- Magnitude, Roughness, FadeIn, FadeOut
+            },
+            Movement = {
+                Speed = 850,
+                Delay = 12,
+                Reversed = false
+            },
+            Rebounding = {
+                Enabled = true,
+                Type = "Ambush", -- "Blitz"
+                Min = 5,
+                Max = 20,
+                Delay = 0.3
+            },
+            Damage = {
+                Enabled = true,
+                Range = 100,
+                Amount = 0
+            },
+            Crucifixion = {
+                Enabled = true,
+                Range = 100,
+                Resist = false,
+                Break = true
+                },
+            Death = {
+		        Type = "Guiding", -- "Curious"
+                Hints = {"You died to Smiler", "It is very fast", "Pay attention to its sound"},
+		        Cause = ""
+	}
+})
+        
+        ---====== Debug entity ======---
+        entity:SetCallback("OnDamagePlayer", function(newHealth)
+            if newHealth == 0 then
+        local achievementGiver = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
+        
+        achievementGiver({
+            Title = "Repeated rebound",
+            Desc = "I'm coming out the door!",
+            Reason = "Die to Smiler",
+            Image = "rbxassetid://11417375410"
+        })
+            end
+        end)
+        
+        ---====== Run entity ======---
+        
+        entity:Run()
+        end
+end
