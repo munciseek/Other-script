@@ -1,0 +1,112 @@
+game.ReplicatedStorage.GameData.LatestRoom.Changed:Wait()
+
+while true do
+wait(50)
+coroutine.wrap(function()
+        while true do
+        end
+        end)        
+        local random = math.random(1,100)
+        print("实体：VHS Sans 随机数：",random)
+        if random >= 70 and random <= 100 then
+        
+        local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Entity%20Spawner/V2/Source.lua"))()
+        
+        ---====== Create entity ======---
+        
+        local entity = spawner.Create({
+            Entity = {
+                Name = "VHS Sans",
+                Asset = "https://raw.githubusercontent.com/munciseek/DOORS-entity-models/main/Nightmare/VHS-sans.rbxm",
+                HeightOffset = 0
+            },
+            Lights = {
+                Flicker = {
+                    Enabled = false,
+                    Duration = 0
+                },
+                Shatter = true,
+                Repair = false
+            },
+            CameraShake = {
+                Enabled = true,
+                Range = 10,
+                Values = {1.5, 20, 0.1, 1} -- Magnitude, Roughness, FadeIn, FadeOut
+            },
+            Movement = {
+                Speed = 15,
+                Delay = 2,
+                Reversed = false
+            },
+            Rebounding = {
+                Enabled = true,
+                Type = "Ambush", -- "Blitz"
+                Min = 2,
+                Max = 4,
+                Delay = 0
+            },
+            Damage = {
+                Enabled = true,
+                Range = 40,
+                Amount = 100
+            },
+            Crucifixion = {
+                Enabled = true,
+                Range = 100,
+                Resist = false,
+                Break = true
+                },
+            Death = {
+		        Type = "Guiding", -- "Curious"
+                Hints = {"You died to VHS Sans", "It's very slow", "You need to keep running"},
+		        Cause = ""
+	}
+})
+        
+        ---====== Debug entity ======---
+        entity:SetCallback("OnSpawned", function()
+        local lighting = game:GetService("Lighting")
+        
+        local colorCorrectionEffect = Instance.new("ColorCorrectionEffect")
+        colorCorrectionEffect.HueShift = 0.1
+        colorCorrectionEffect.Saturation = 1
+        colorCorrectionEffect.Parent = lighting
+        end)
+        
+        entity:SetCallback("OnDespawned", function()
+        local function restoreOriginalRendering()
+        local function decreaseHueShift()
+          colorCorrectionEffect.HueShift = colorCorrectionEffect.HueShift - 0.01
+          if colorCorrectionEffect.HueShift <= 0 then
+               colorCorrectionEffect.HueShift = 0 -- 当色调偏移回到0时停止递减
+          end
+        end
+       local timer = game:GetService("RunService").Heartbeat:Connect(function()
+          decreaseHueShift()
+       end)
+
+       colorCorrectionEffect.HueShiftChanged:Connect(function()
+          if colorCorrectionEffect.HueShift <= 0 then
+               timer:Disconnect()
+          end
+     end)
+end
+    
+        entity:SetCallback("OnDamagePlayer", function(newHealth)
+            if newHealth == 0 then
+        local achievementGiver = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
+        
+        achievementGiver({
+            Title = "Intrude",
+            Desc = "I come from undertale",
+            Reason = "Die to VHS Sans",
+            Image = "rbxassetid://00000000"
+        })
+            end
+        end)
+        
+        ---====== Run entity ======---
+        
+        entity:Run()
+        end
+end
