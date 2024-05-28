@@ -1,0 +1,142 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local playerGui = player:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui", playerGui)
+local frame = Instance.new("Frame", screenGui)
+local mian = Instance.new("Frame", screenGui)
+local button = Instance.new("ImageButton", screenGui)
+local textLabel = Instance.new("TextLabel", mian)
+
+mian.Position = UDim2.new(0.5, 0, 0.8, 0)
+mian.Size = UDim2.new(0, 100, 0, 50)
+mian.AnchorPoint = Vector2.new(0.5, 0.5)
+mian.BackgroundColor3 = Color3.fromRGB(30, 17, 16)
+mian.BackgroundTransparency = 1
+
+local FrameCorner = Instance.new("UICorner")
+FrameCorner.CornerRadius = UDim.new(0, 30)
+FrameCorner.Parent = mian
+
+frame.Position = UDim2.new(0.5, 0, 0.8, 0)
+frame.Size = UDim2.new(0, 0, 0, 50)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(30, 17, 16)
+frame.BackgroundTransparency = 0.2
+
+local FrameCorner = Instance.new("UICorner")
+FrameCorner.CornerRadius = UDim.new(0, 30)
+FrameCorner.Parent = frame
+
+local uiStroke = Instance.new("UIStroke")
+uiStroke.Parent = frame
+uiStroke.Color = Color3.fromRGB(255, 222, 189)
+uiStroke.Thickness = 5
+uiStroke.Transparency = 0
+
+textLabel.Size = UDim2.new(1, 0, 1, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.TextColor3 = Color3.new(207, 199, 176)
+textLabel.Font = "Oswald"
+textLabel.TextScaled = true
+
+button.Position = UDim2.new(1, -300, 0.5, -20)
+button.Image = "rbxassetid://17645464874"
+button.Size = UDim2.new(0, 110, 0, 110)
+button.AnchorPoint = Vector2.new(1, 0.5)
+button.BackgroundColor3 = Color3.fromRGB(30, 17, 16)
+button.BackgroundTransparency = 0.2
+
+local FrameCorner = Instance.new("UICorner")
+FrameCorner.CornerRadius = UDim.new(0, 100)
+FrameCorner.Parent = button
+
+local uiStroke = Instance.new("UIStroke")
+uiStroke.Parent = button
+uiStroke.Color = Color3.fromRGB(255, 222, 189)
+uiStroke.Thickness = 3
+uiStroke.Transparency = 0
+
+local value = 100
+local maxValue = 100
+local decreasing = false
+local canClick = true
+
+-- 更新函数
+local function updateFrame()
+    frame.Size = UDim2.new(value / maxValue / 2, 0, frame.Size.Y.Scale, frame.Size.Y.Offset)
+    textLabel.Text = tostring(value) .. " / " .. tostring(maxValue)
+end
+
+local function updateView()
+    if decreasing then
+        workspace.CurrentCamera.FieldOfView = 70 + (90 - 70) * (value / maxValue)
+    else
+        workspace.CurrentCamera.FieldOfView = 70 + 20 * (value / maxValue)
+    end
+end
+
+local function decreaseValue()
+    while decreasing and value > 0 do
+        value = math.max(value - 5, 0)
+        humanoid.WalkSpeed = 20
+        updateFrame()
+        updateView()
+        wait(0.01)
+    end
+    if value == 0 then
+        
+        humanoid.WalkSpeed = 5
+        wait(2)
+        canClick = false
+        decreasing = false
+        
+    end
+end
+
+local function increaseValue()
+    while not decreasing and value < maxValue do
+        value = math.min(value + 1, maxValue)
+        humanoid.WalkSpeed = 15
+        updateFrame()
+        updateView()
+        wait(0.01)
+    end
+    if value == maxValue then
+        canClick = true
+    end
+end
+
+button.MouseButton1Click:Connect(function()
+    if canClick then
+        decreasing = not decreasing
+        if decreasing then
+            
+            decreaseValue()
+        else
+            
+            increaseValue()
+        end
+    end
+end)
+
+updateView()
+updateFrame()
+
+local function monitorValue()
+    while true do
+        if value == 0 then
+            canClick = false
+            
+            humanoid.WalkSpeed = 5
+            wait(2)
+            humanoid.WalkSpeed = 5
+            
+            increaseValue()
+        end
+        wait(0)
+    end
+end
+
+spawn(monitorValue)
