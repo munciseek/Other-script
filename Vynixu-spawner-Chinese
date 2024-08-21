@@ -1,0 +1,75 @@
+---====== 获取代码 ======---
+
+local Spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/munciseek/Other-script/main/Vynixu%20entity%20spawner%20fix"))()
+
+---====== 创建实体 ======---
+
+local entity = Spawner.createEntity({
+    CustomName = "实体名称",
+    Model = "N/A", -- 可以是Roblox模型ID"rbxassetid://1234567890"或者Github的Raw模型
+    Speed = 0,
+    MoveDelay = 0,
+    HeightOffset = 0,
+    CanKill = true,
+    KillRange = 0,
+    SpawnInFront = false,
+    ShatterLights = false,
+    FlickerLights = {
+        Enabled = true,
+        Duration = 1
+    },
+    Cycles = {
+        Min = 0,
+        Max = 0,
+        Delay = 0
+    },
+    CamShake = {
+        Enabled = true,
+        Values = {1.5, 20, 0.1, 1},
+        Range = 100
+    },
+    ResistCrucifix = true,
+    BreakCrucifix = false,
+    DeathMessage = {"在", "这里", "写", "死亡", "消息"},
+    IsCuriousLight = false
+})
+
+---====== Debug ======---
+
+entity.Debug.OnEntitySpawned = function()
+    print("实体生成了")
+end
+
+entity.Debug.OnEntityDespawned = function()
+    print("实体消失了")
+end
+
+entity.Debug.OnEntityStartMoving = function()
+    print("实体开始移动")
+end
+
+entity.Debug.OnEntityFinishedRebound = function()
+    print("实体开始回弹")
+end
+
+entity.Debug.OnEntityEnteredRoom = function(room)
+    print("实体已到达", room)
+end
+
+entity.Debug.OnLookAtEntity = function()
+    print("玩家看到实体")
+end
+
+entity.Debug.OnDeath = function()
+    print("玩家死亡了")
+end
+
+--[[
+entity.Debug.OnUseCrucifix = function()
+print("在这里写十字架的脚本")
+end
+]]--
+
+---====== 运行脚本 ======---
+
+Spawner.runEntity(entity)
