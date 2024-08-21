@@ -1,0 +1,73 @@
+local Spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/munciseek/Other-script/main/Vynixu%20entity%20spawner%20fix"))()
+
+---====== Create entity ======---
+
+local entity = Spawner.createEntity({
+    CustomName = "Eenity name",
+    Model = "rbxassetid://000000", -- Your entity's model url here ("rbxassetid://1234567890" or GitHub raw url)
+    Speed = 0,
+    MoveDelay = 0,
+    HeightOffset = 0,
+    CanKill = true,
+    KillRange = 0,
+    SpawnInFront = false,
+    ShatterLights = false,
+    FlickerLights = {
+        Enabled = true,
+        Duration = 1
+    },
+    Cycles = {
+        Min = 0,
+        Max = 0,
+        Delay = 0
+    },
+    CamShake = {
+        Enabled = true,
+        Values = {1.5, 20, 0.1, 1},
+        Range = 100
+    },
+    ResistCrucifix = true,
+    BreakCrucifix = false,
+    DeathMessage = {"Write", "the", "death", "message", "here"},
+    IsCuriousLight = false
+})
+
+---====== Debug ======---
+
+entity.Debug.OnEntitySpawned = function()
+    print("Entity has spawned")
+end
+
+entity.Debug.OnEntityDespawned = function()
+    print("Entity has despawnedd")
+end
+
+entity.Debug.OnEntityStartMoving = function()
+    print("Entity started moving")
+end
+
+entity.Debug.OnEntityFinishedRebound = function()
+    print("Entity finished rebound")
+end
+
+entity.Debug.OnEntityEnteredRoom = function(room)
+    print("Entity entered room:", room)
+end
+
+entity.Debug.OnLookAtEntity = function()
+    print("Player looking at entity")
+end
+
+entity.Debug.OnDeath = function()
+    print("Player Death")
+end
+
+--[[
+entity.Debug.OnUseCrucifix = function()
+print("Custom crucifixion script here")
+end
+]]--
+
+---====== Run entity ======---
+
+Spawner.runEntity(entity)
