@@ -1,10 +1,12 @@
+---====== Get script ======---
+
 local Spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/munciseek/Other-script/main/Vynixu%20entity%20spawner%20fix"))()
 
 ---====== Create entity ======---
 
 local entity = Spawner.createEntity({
     CustomName = "Eenity name",
-    Model = "rbxassetid://000000", -- Your entity's model url here ("rbxassetid://1234567890" or GitHub raw url)
+    Model = "N/A", -- Your entity's model url here ("rbxassetid://1234567890" or GitHub raw url)
     Speed = 0,
     MoveDelay = 0,
     HeightOffset = 0,
