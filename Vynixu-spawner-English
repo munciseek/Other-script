@@ -6,22 +6,22 @@ local Spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/munci
 
 local entity = Spawner.createEntity({
     CustomName = "Eenity name",
-    Model = "N/A", -- Your entity's model url here ("rbxassetid://1234567890" or GitHub raw url)
-    Speed = 0,
-    MoveDelay = 0,
+    Model = "rbxassetid://1234567890", -- Your entity's model url here ("rbxassetid://1234567890" or GitHub raw url)
+    Speed = 100,
+    MoveDelay = 3,
     HeightOffset = 0,
     CanKill = true,
-    KillRange = 0,
+    KillRange = 100,
     SpawnInFront = false,
-    ShatterLights = false,
+    ShatterLights = true,
     FlickerLights = {
         Enabled = true,
         Duration = 1
     },
     Cycles = {
-        Min = 0,
-        Max = 0,
-        Delay = 0
+        Min = 1,
+        Max = 1,
+        Delay = 1
     },
     CamShake = {
         Enabled = true,
@@ -30,7 +30,7 @@ local entity = Spawner.createEntity({
     },
     ResistCrucifix = true,
     BreakCrucifix = false,
-    DeathMessage = {"Write", "the", "death", "message", "here"},
+    DeathMessage = {"This death message is not available"},
     IsCuriousLight = false
 })
 
@@ -62,13 +62,28 @@ end
 
 entity.Debug.OnDeath = function()
     print("Player Death")
+local func, setupval, getinfo, typeof, getgc, next = nil, debug.setupvalue or setupvalue, debug.getinfo or getinfo, typeof, getgc, next
+for i,v in next, getgc(false) do
+    if typeof(v) == "function" then
+        local info = getinfo(v)
+        if info.currentline == 54 and info.nups == 2 and info.is_vararg == 0 then
+            func = v
+            break
+        end
+    end
+end
+local function DeathHint(hints, type: string)
+    setupval(func, 1, hints)
+    if type ~= nil then
+        setupval(func, 2, type)
+    end
+end
+DeathHint({"Write", "the", "death", "message", "here"}, "Blue") -- "Blue" or "Yellow"
 end
 
---[[
 entity.Debug.OnUseCrucifix = function()
 print("Custom crucifixion script here")
 end
-]]--
 
 ---====== Run entity ======---
 
