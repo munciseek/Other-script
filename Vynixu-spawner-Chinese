@@ -14,20 +14,9 @@ local entity = Spawner.createEntity({
     KillRange = 100,
     SpawnInFront = false,
     ShatterLights = true,
-    FlickerLights = {
-        Enabled = true,
-        Duration = 1
-    },
-    Cycles = {
-        Min = 1,
-        Max = 1,
-        Delay = 1
-    },
-    CamShake = {
-        Enabled = true,
-        Values = {1.5, 20, 0.1, 1},
-        Range = 100
-    },
+    FlickerLights = { Enabled = true, Duration = 1 },
+    Cycles = { Min = 1, Max = 1, Delay = 1 },
+    CamShake = { Enabled = true, Values = {1.5, 20, 0.1, 1}, Range = 100  },
     ResistCrucifix = true,
     BreakCrucifix = false,
     DeathMessage = {"这个死亡信息不可用"},
