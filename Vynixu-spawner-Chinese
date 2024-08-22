@@ -6,7 +6,7 @@ local Spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/munci
 
 local entity = Spawner.createEntity({
     CustomName = "实体名称",
-    Model = "N/A", -- 可以是Roblox模型ID"rbxassetid://1234567890"或者Github的Raw模型
+    Model = "rbxassetid://1234567890", -- 可以是Roblox模型ID"rbxassetid://1234567890"或者Github的Raw模型
     Speed = 100,
     MoveDelay = 3,
     HeightOffset = 0,
@@ -84,7 +84,6 @@ end
 entity.Debug.OnUseCrucifix = function()
 print("在这里写十字架的脚本")
 end
-
 
 ---====== 运行脚本 ======---
 
