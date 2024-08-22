@@ -7,21 +7,21 @@ local Spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/munci
 local entity = Spawner.createEntity({
     CustomName = "实体名称",
     Model = "N/A", -- 可以是Roblox模型ID"rbxassetid://1234567890"或者Github的Raw模型
-    Speed = 0,
-    MoveDelay = 0,
+    Speed = 100,
+    MoveDelay = 3,
     HeightOffset = 0,
     CanKill = true,
-    KillRange = 0,
+    KillRange = 100,
     SpawnInFront = false,
-    ShatterLights = false,
+    ShatterLights = true,
     FlickerLights = {
         Enabled = true,
         Duration = 1
     },
     Cycles = {
-        Min = 0,
-        Max = 0,
-        Delay = 0
+        Min = 1,
+        Max = 1,
+        Delay = 1
     },
     CamShake = {
         Enabled = true,
@@ -30,7 +30,7 @@ local entity = Spawner.createEntity({
     },
     ResistCrucifix = true,
     BreakCrucifix = false,
-    DeathMessage = {"在", "这里", "写", "死亡", "消息"},
+    DeathMessage = {"这个死亡信息不可用"},
     IsCuriousLight = false
 })
 
@@ -62,13 +62,29 @@ end
 
 entity.Debug.OnDeath = function()
     print("玩家死亡了")
+local func, setupval, getinfo, typeof, getgc, next = nil, debug.setupvalue or setupvalue, debug.getinfo or getinfo, typeof, getgc, next
+for i,v in next, getgc(false) do
+    if typeof(v) == "function" then
+        local info = getinfo(v)
+        if info.currentline == 54 and info.nups == 2 and info.is_vararg == 0 then
+            func = v
+            break
+        end
+    end
+end
+local function DeathHint(hints, type: string)
+    setupval(func, 1, hints)
+    if type ~= nil then
+        setupval(func, 2, type)
+    end
+end
+DeathHint({"在", "这里", "写", "死亡",  "信息"}, "Blue") -- "Blue" 或者 "Yellow"
 end
 
---[[
 entity.Debug.OnUseCrucifix = function()
 print("在这里写十字架的脚本")
 end
-]]--
+
 
 ---====== 运行脚本 ======---
 
