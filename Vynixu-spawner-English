@@ -20,8 +20,7 @@ local entity = Spawner.createEntity({
     ResistCrucifix = true,
     BreakCrucifix = false,
     DeathMessage = {"This death message is not available"},
-    IsCuriousLight = false
-})
+    IsCuriousLight = false })
 
 ---====== Debug ======---
 
