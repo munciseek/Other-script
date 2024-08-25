@@ -1,12 +1,15 @@
 local screenGui = Instance.new("ScreenGui")
 local imageButton = Instance.new("ImageButton")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-imageButton.Size = UDim2.new(0, 100, 0, 100)
-imageButton.Position = UDim2.new(0, 800, 0, 0)
+imageButton.Size = UDim2.new(0.1, 0, 0.2, 0)
+imageButton.Position = UDim2.new(0.6, 0, 0.4, 0)
 imageButton.Image = "rbxassetid://18837834074"
 imageButton.BackgroundTransparency = 1
 imageButton.Parent = screenGui
-imageButton.Visible = false
 local normalImage = "rbxassetid://18837834074"
 local clickedImage = "rbxassetid://18737104203"
 local isFlashlightOn = false
@@ -39,7 +42,10 @@ local function onButtonClicked()
     local sound = handle:WaitForChild(isFlashlightOn and "sound_open" or "sound_close")
     sound:Play()
 end
-
+local function onPlayerDied()
+    imageButton.Visible = false
+end
+humanoid.Died:Connect(onPlayerDied)
 imageButton.MouseButton1Click:Connect(onButtonClicked)
 
 local shadow = game:GetObjects("rbxassetid://13099716081")[1]
@@ -77,11 +83,9 @@ end
 shadow.Equipped:Connect(function()
     setupCrucifix()
     Plr:SetAttribute("Hidden", true)
-imageButton.Visible = true
 end)
 
 shadow.Unequipped:Connect(function()
     resetArms()
     Plr:SetAttribute("Hidden", false)
-imageButton.Visible = false
 end)
