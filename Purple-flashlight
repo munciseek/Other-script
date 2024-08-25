@@ -1,0 +1,87 @@
+local screenGui = Instance.new("ScreenGui")
+local imageButton = Instance.new("ImageButton")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+imageButton.Size = UDim2.new(0, 100, 0, 100)
+imageButton.Position = UDim2.new(0, 800, 0, 0)
+imageButton.Image = "rbxassetid://18837834074"
+imageButton.BackgroundTransparency = 1
+imageButton.Parent = screenGui
+imageButton.Visible = false
+local normalImage = "rbxassetid://18837834074"
+local clickedImage = "rbxassetid://18737104203"
+local isFlashlightOn = false
+local function onButtonClicked()
+    isFlashlightOn = not isFlashlightOn
+    imageButton.Image = isFlashlightOn and clickedImage or normalImage
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    
+    local animationInstance = Instance.new("Animation")
+    animationInstance.AnimationId = isFlashlightOn and "rbxassetid://10371010815" or "rbxassetid://10371079646"
+    local animationTrack = character:WaitForChild("Humanoid"):LoadAnimation(animationInstance)
+    animationTrack:Play()
+
+    local flashlight = character:WaitForChild("PurpleFlashlight")
+    local handle = flashlight:WaitForChild("Handle")
+    local neon = handle:WaitForChild("Neon")
+
+    local attachment = neon:WaitForChild("Attachment")
+    local particleEmitter = attachment:WaitForChild("ParticleEmitter")
+    local surfaceLight = attachment:WaitForChild("SurfaceLight")
+    local lightAttach = neon:WaitForChild("LightAttach")
+    local lightAttachSurfaceLight = lightAttach:WaitForChild("SurfaceLight")
+
+    attachment.Shiny.Enabled = isFlashlightOn
+    particleEmitter.Enabled = isFlashlightOn
+    surfaceLight.Enabled = isFlashlightOn
+    lightAttachSurfaceLight.Enabled = isFlashlightOn
+
+    local sound = handle:WaitForChild(isFlashlightOn and "sound_open" or "sound_close")
+    sound:Play()
+end
+
+imageButton.MouseButton1Click:Connect(onButtonClicked)
+
+local shadow = game:GetObjects("rbxassetid://13099716081")[1]
+shadow.Parent = game.Players.LocalPlayer.Backpack
+
+local Players = game:GetService("Players")
+local Plr = Players.LocalPlayer
+local Char = Plr.Character or Plr.CharacterAdded:Wait()
+local Hum = Char:WaitForChild("Humanoid")
+local RightArm = Char:WaitForChild("RightUpperArm")
+local LeftArm = Char:WaitForChild("LeftUpperArm")
+local RightC1 = RightArm.RightShoulder.C2
+local LeftC1 = LeftArm.LeftShoulder.C2
+
+local function setupCrucifix()
+    RightArm.Name = "R_Arm"
+    LeftArm.Name = "L_Arm"
+    
+    RightArm.RightShoulder.C2 = RightC1 * CFrame.Angles(math.rad(-90), 0, 0)
+    LeftArm.LeftShoulder.C2 = LeftC1
+    
+    for _, v in ipairs(Hum:GetPlayingAnimationTracks()) do
+        v:Stop()
+    end
+end
+
+local function resetArms()
+    RightArm.Name = "RightUpperArm"
+    LeftArm.Name = "LeftUpperArm"
+    
+    RightArm.RightShoulder.C2 = RightC1
+    LeftArm.LeftShoulder.C2 = LeftC1
+end
+
+shadow.Equipped:Connect(function()
+    setupCrucifix()
+    Plr:SetAttribute("Hidden", true)
+imageButton.Visible = true
+end)
+
+shadow.Unequipped:Connect(function()
+    resetArms()
+    Plr:SetAttribute("Hidden", false)
+imageButton.Visible = false
+end)
