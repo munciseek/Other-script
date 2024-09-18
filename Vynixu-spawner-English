@@ -50,7 +50,7 @@ end
 
 entity.Debug.OnDeath = function()
     print("Player Death")
-firesignal(game.ReplicatedStorage.RemoteEvents.DeathHint.OnClientEvent, {"Death","message","In","Here},"Blue" -- "Blue" or "yellow"
+firesignal(game.ReplicatedStorage.RemotesFolder.DeathHint.OnClientEvent, {"You died to Entity","message","message 2"},"Blue")
 end
 
 entity.Debug.OnUseCrucifix = function()
